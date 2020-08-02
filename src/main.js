@@ -15,7 +15,7 @@ const router = new VueRouter({
   mode: "history"
 });
 
-Vue.http.options.root = "http://www.omdbapi.com/";
+Vue.http.options.root = "https://www.omdbapi.com/";
 
 new Vue({
   el: "#app",

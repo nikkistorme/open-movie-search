@@ -44,7 +44,6 @@
 import { mapGetters } from "vuex";
 import { mapMutations } from "vuex";
 import MovieCard from "./MovieCard.vue";
-// const api = require("../../api.json");
 
 export default {
   components: {
@@ -58,7 +57,8 @@ export default {
         searchType: ""
       },
       recentSearchMessage: "",
-      showError: false
+      showError: false,
+      api: process.env.VUE_APP_OPEN_MOVIE_API_KEY
     };
   },
   computed: {
@@ -66,36 +66,36 @@ export default {
   },
   methods: {
     ...mapMutations(["addToHistory"]),
-    // onSubmit() {
-    //   this.$http
-    //     .get(
-    //       `?apikey=${api.key}&t=${this.search.searchTitle}${
-    //         this.search.searchType ? `&type=${this.search.searchType}` : ""
-    //       }${this.search.searchYear ? `&y=${this.search.searchYear}` : ""}`
-    //     )
-    //     .then(
-    //       response => response.json(),
-    //       error => {
-    //         alert(error);
-    //       }
-    //     )
-    //     .then(data => {
-    //       if (data.Error) {
-    //         this.showError = true;
-    //         const errorString = `Failed search for "${
-    //           this.search.searchTitle
-    //         }"${
-    //           this.search.searchYear ? ` + "${this.search.searchYear}"` : ""
-    //         }${this.search.searchType ? ` + "${this.search.searchType}"` : ""}`;
-    //         console.log("errorString", errorString);
-    //         this.$store.commit("addToHistory", { data: errorString });
-    //       } else {
-    //         this.recentSearchMessage = `Showing results for "${this.search.searchTitle}"`;
-    //         this.showError = false;
-    //         this.$store.commit("addToHistory", { data: data });
-    //       }
-    //     });
-    // },
+    onSubmit() {
+      this.$http
+        .get(
+          `?apikey=${this.api}&t=${this.search.searchTitle}${
+            this.search.searchType ? `&type=${this.search.searchType}` : ""
+          }${this.search.searchYear ? `&y=${this.search.searchYear}` : ""}`
+        )
+        .then(
+          response => response.json(),
+          error => {
+            alert(error);
+          }
+        )
+        .then(data => {
+          if (data.Error) {
+            this.showError = true;
+            const errorString = `Failed search for "${
+              this.search.searchTitle
+            }"${
+              this.search.searchYear ? ` + "${this.search.searchYear}"` : ""
+            }${this.search.searchType ? ` + "${this.search.searchType}"` : ""}`;
+            console.log("errorString", errorString);
+            this.$store.commit("addToHistory", { data: errorString });
+          } else {
+            this.recentSearchMessage = `Showing results for "${this.search.searchTitle}"`;
+            this.showError = false;
+            this.$store.commit("addToHistory", { data: data });
+          }
+        });
+    },
     test() {
       console.log(this.appHistory);
     }
