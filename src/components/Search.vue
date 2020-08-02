@@ -67,7 +67,6 @@ export default {
   methods: {
     ...mapMutations(["addToHistory"]),
     onSubmit() {
-      console.log("this.api", this.api);
       this.$http
         .get(
           `?apikey=${this.api}&t=${this.search.searchTitle}${
